@@ -9,6 +9,7 @@ import random
 import string
 import time
 import shutil
+
 from telegram.ext import CommandHandler
 from telegram import InlineKeyboardMarkup, ParseMode
 
@@ -42,7 +43,7 @@ ariaDlManager.start_listener()
 
 
 class MirrorListener(listeners.MirrorListeners):
-    def __init__(self, bot, update, isZip=False, extract=False, isQbit=False, isLeech=False, pswd=None):
+    def __init__(self, bot, update, pswd, isZip=False, extract=False, isQbit=False, isLeech=False):
         super().__init__(bot, update)
         self.extract = extract
         self.isZip = isZip
@@ -433,7 +434,7 @@ def _mirror(bot, update, isZip=False, extract=False, isQbit=False, isLeech=False
                 sendMessage(str(e), bot, update)
                 return
 
-    listener = MirrorListener(bot, update, isZip, extract, isLeech, pswd)
+    listener = MirrorListener(bot, update, pswd, isZip, extract, isQbit, isLeech)
 
     if bot_utils.is_gdrive_link(link):
         if not isZip and not extract and not isLeech:
@@ -466,7 +467,7 @@ def _mirror(bot, update, isZip=False, extract=False, isQbit=False, isLeech=False
             return
         link_type = bot_utils.get_mega_link_type(link)
         if link_type == "folder" and BLOCK_MEGA_FOLDER:
-            sendMessage("Mega folder are blocked!", bot, update)
+            sendMessage("Mega links are blocked! because we don't have Mega Business Account, xD", bot, update)
         else:
             mega_dl = MegaDownloadHelper()
             mega_dl.add_download(link, f'{DOWNLOAD_DIR}{listener.uid}/', listener)
