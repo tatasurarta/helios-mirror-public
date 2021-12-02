@@ -1,7 +1,9 @@
 This is a Telegram Bot written in Python for mirroring files on the Internet to your Google Drive or Telegram. Based on [python-aria-mirror-bot](https://github.com/lzzy12/python-aria-mirror-bot)
+##Fork of Anasty's Repo previously know as Slam Mirror Repo
 
 # Features:
-
+<details>
+    <summary><b>Click Here For More Details</b></summary>
 ## By me
 - qBittorrent
 - Select files from Torrent before downloading using qbittorrent
@@ -23,6 +25,7 @@ This is a Telegram Bot written in Python for mirroring files on the Internet to 
 - Mirror/Leech by reply (soon will add for watch and clone)
 - Search for torrents with variable plugins using qBittorrent search engine
 - Many bugs has been fixed
+- Force Subscribe bot
 
 ## From official and Other Repositories
 - Mirror direct download links, Torrent, and Telegram files to Google Drive
@@ -60,14 +63,36 @@ uptobox.com (Uptobox account must be premium), solidfiles.com
 ```
 **See these examples for custom filename, Extract/Compress password protected files and downlaod from protected links**
 <p><a href="https://telegra.ph/Magneto-Python-Aria---Custom-Filename-Examples-01-20"> <img src="https://img.shields.io/badge/See%20Telegraph-grey?style=for-the-badge&logo=telegraph" width="170""/></a></p>
+</details>
 
 # How to deploy?
+##Simplest and easiest way
+```
+- Fork this repo
+- Download the sample_config.env file
+- Change it's name to config.env
+- Remove the first line saying" _____REMOVE_THIS_LINE_____=True
+- Fill all the config vars
+- Create another private repo on github upload your config file there and get the "RAW URL" of that file
+- Go to your forked repo setting and in secrates fill the values of
+- HEROKU_API_KEY - "Your Heroku API"
+- HEROKU_EMAIL - "Your Heroku Email"
+- HEROKU_APP_NAME - "Your Heroku App name"
+- CONFIG_FILE_URL - "URL of your Config.env file" 
+  You can also upload your config file on gdrive and use index link
+- After that go to Action tab on your forked repo and run action"
+- Your bot will be deployed, you can check logs of actions and heroku in case if you face any issue.
+```
+##More ways to Deploy
+<details>
+    <summary> Click Here For More Details </summary>
+
 Deploying is pretty much straight forward and is divided into several steps as follows:
 ## Installing requirements
 
 - Clone this repo:
 ```
-git clone https://github.com/anasty17/mirror-leech-telegram-bot mirrorbot/ && cd mirrorbot
+if you dont know how to clone than learn it first
 ```
 
 - Install requirements
@@ -89,6 +114,8 @@ sudo pacman -S docker python
 ```
 pip3 install -r requirements-cli.txt
 ```
+</details>
+
 ## Generate Database
 <details>
     <summary><b>Click Here For More Details</b></summary>
@@ -143,7 +170,8 @@ Fill up rest of the fields. Meaning of each field is discussed below:
 - `DATABASE_URL`: Your Database URL. See [Generate Database](https://github.com/anasty17/mirror-leech-telegram-bot/tree/master#generate-database) to generate database (**NOTE**: If you use database you can save your Sudo ID permanently using `/addsudo` command).
 - `AUTHORIZED_CHATS`: Fill user_id and chat_id (not username) of groups/users you want to authorize. Separate them with space, Examples: `-0123456789 -1122334455 6915401739`.
 - `SUDO_USERS`: Fill user_id (not username) of users whom you want to give sudo permission. Separate them with space, Examples: `0123456789 1122334455 6915401739` (**NOTE**: If you want to save Sudo ID permanently without database, you must fill your Sudo Id here).
-- `LOGS_CHATS`: Fill chat_id of channel/group where you want to store logs. Separate them with space, Examples: `-0123456789 -1122334455 6915401739`.
+- `LOGS_CHATS`: Fill chat_id of channel/group where you want to store logs. Separate them with space, Examples: `-0123456789 -1122334455 6915401739`
+<br> ```Note:Add the mirror bot in Log Channel/Group as Admin ```
 - `IS_TEAM_DRIVE`: Set to `True` if `GDRIVE_FOLDER_ID` is from a Team Drive else `False` or Leave it empty. `Bool`
 - `USE_SERVICE_ACCOUNTS`: (Leave empty if unsure) Whether to use Service Accounts or not. For this to work see [Using Service Accounts](https://github.com/anasty17/mirror-leech-telegram-bot#generate-service-accounts-what-is-service-account) section below.
 - `INDEX_URL`: Refer to https://gitlab.com/ParveenBhadooOfficial/Google-Drive-Index The URL should not have any trailing '/'
@@ -168,9 +196,13 @@ Fill up rest of the fields. Meaning of each field is discussed below:
 - `AS_DOCUMENT`: Default Telegram file type upload. Empty or `False` means as media. `Bool`
 - `EQUAL_SPLITS`: Split files larger than **TG_SPLIT_SIZE** into equal parts size. `Bool`
 - `CUSTOM_FILENAME`: Add custom word to leeched file name.
+- `PHPSESSID` and `CRYPT`: Cookies for gdtot google drive link generator. Check setup [here](https://github.com/anasty17/mirror-leech-telegram-bot/tree/master#Gdtot Cookies)
+- `AUTHOR_NAME`: Telegraph Author Name, Default is "Helios Mirror Bot"
+- `AUTHOR_URL`: Telegraph Author URL, Default is "https://t.me/heliosmirror"
+- `TITLE_NAME`: Telegraph Title Name, Default is "Helios Mirror Search"
+- `GD_INFO`: Google Drive File Discription, Default is "Uploaded by Helios Mirror Bot"
 - `SHORTENER_API`: Fill your Shortener API key.
 - `SHORTENER`: Shortener URL.
-- `PHPSESSID` and `CRYPT`: Cookies for gdtot google drive link generator. Check setup [here](https://github.com/anasty17/mirror-leech-telegram-bot/tree/master#Gdtot Cookies)
 Supported URL Shorteners:
 ```
 exe.io, gplinks.in, shrinkme.io, urlshortx.com, shortzon.com, bit.ly,
@@ -237,8 +269,9 @@ help - All cmds with description
 pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
 python3 generate_drive_token.py
 ```
-## Deploying On VPS
-
+##Deploying On VPS
+<details>
+    <summary><b>Click Here For More Details</b></summary>
 **IMPORTANT NOTE**: You must set `SERVER_PORT` variable to `80` or any other port you want to use.
 
 - Start Docker daemon (skip if already running):
@@ -292,6 +325,8 @@ sudo docker image prune -a
 ```
 - Tutorial video from Tortoolkit repo
 <p><a href="https://youtu.be/c8_TU1sPK08"> <img src="https://img.shields.io/badge/See%20Video-black?style=for-the-badge&logo=YouTube" width="160""/></a></p>
+</details>
+
 
 ## Deploying on Heroku
 - Deploying on Heroku with Github Workflow
@@ -301,6 +336,11 @@ sudo docker image prune -a
 <p><a href="https://telegra.ph/How-to-Deploy-a-Mirror-Bot-to-Heroku-with-CLI-05-06"> <img src="https://img.shields.io/badge/Deploy%20Guide-grey?style=for-the-badge&logo=telegraph" width="170""/></a></p>
 
 # Using Service Accounts for uploading to avoid user rate limit
+
+<details>
+    <summary><b>Click Here For More Details</b></summary>
+
+
 For Service Account to work, you must set `USE_SERVICE_ACCOUNTS` = "True" in config file or environment variables.
 **NOTE**: Using Service Accounts is only recommended while uploading to a Team Drive.
 
@@ -361,6 +401,7 @@ Then add emails from emails.txt to Google Group, after that add this Google Grou
 ```
 python3 add_to_team_drive.py -d SharedTeamDriveSrcID
 ```
+</details>
 
 # Multi Search IDs
 To use list from multi TD/folder. Run driveid.py in your terminal and follow it. It will generate **drive_folder** file or u can simply create `drive_folder` file in working directory and fill it, check below format:
