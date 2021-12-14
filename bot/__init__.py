@@ -249,13 +249,6 @@ if DB_URI is not None:
 LOGGER.info("Generating USER_SESSION_STRING")
 app = Client('pyrogram', api_id=int(TELEGRAM_API), api_hash=TELEGRAM_HASH, bot_token=BOT_TOKEN, workers=343)
 
-# Generate Telegraph Token
-sname = ''.join(random.SystemRandom().choices(string.ascii_letters, k=8))
-LOGGER.info("Generating TELEGRAPH_TOKEN using '" + sname + "' name")
-telegraph = Telegraph()
-telegraph.create_account(short_name=sname)
-telegraph_token = telegraph.get_access_token()
-
 try:
     TG_SPLIT_SIZE = getConfig('TG_SPLIT_SIZE')
     if len(TG_SPLIT_SIZE) == 0 or int(TG_SPLIT_SIZE) > 2097152000:
@@ -443,28 +436,28 @@ except KeyError:
 try:
     GD_INFO = getConfig('GD_INFO')
     if len(GD_INFO) == 0:
-        GD_INFO = None
+        GD_INFO = 'Uploaded by Helios Mirror Bot'
 except KeyError:
     GD_INFO = 'Uploaded by Helios Mirror Bot'
 
 try:
     TITLE_NAME = getConfig('TITLE_NAME')
     if len(TITLE_NAME) == 0:
-        TITLE_NAME = None
+        TITLE_NAME = 'Helios-Mirror-Search'
 except KeyError:
     TITLE_NAME = 'Helios-Mirror-Search'
 
 try:
     AUTHOR_NAME = getConfig('AUTHOR_NAME')
     if len(AUTHOR_NAME) == 0:
-        AUTHOR_NAME = None
+        AUTHOR_NAME = 'Helios-Mirror-Bot'
 except KeyError:
     AUTHOR_NAME = 'Helios-Mirror-Bot'
 
 try:
     AUTHOR_URL = getConfig('AUTHOR_URL')
     if len(AUTHOR_URL) == 0:
-        AUTHOR_URL = None
+        AUTHOR_URL = 'https://t.me/heliosmirror'
 except KeyError:
     AUTHOR_URL = 'https://t.me/heliosmirror'
 
@@ -547,12 +540,6 @@ if os.path.exists('drive_folder'):
                 INDEX_URLS.append(temp[2])
             except IndexError as e:
                 INDEX_URLS.append(None)
-
-SEARCH_PLUGINS = os.environ.get('SEARCH_PLUGINS', None)
-if SEARCH_PLUGINS is not None:
-    SEARCH_PLUGINS = json.loads(SEARCH_PLUGINS)
-    qbclient = get_client()
-    qbclient.search_install_plugin(SEARCH_PLUGINS)
 
 updater = tg.Updater(token=BOT_TOKEN, request_kwargs={'read_timeout': 30, 'connect_timeout': 15})
 bot = updater.bot

@@ -10,7 +10,7 @@ from telegram import ParseMode
 from telegram.ext import CommandHandler
 from telegraph import Telegraph
 from wserver import start_server_async
-from bot import bot, app, dispatcher, updater, botStartTime, IGNORE_PENDING_REQUESTS, IS_VPS, PORT, alive, web, nox, OWNER_ID, AUTHORIZED_CHATS, telegraph_token
+from bot import bot, app, dispatcher, updater, botStartTime, IGNORE_PENDING_REQUESTS, IS_VPS, PORT, alive, web, nox, OWNER_ID, AUTHORIZED_CHATS
 from bot.helper.ext_utils import fs_utils
 from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.message_utils import *
@@ -162,11 +162,9 @@ help_string_telegraph = f'''<br>
 <br><br>
 <b>/{BotCommands.ExecHelpCommand}</b>: Get help for Executor module (Only Owner)
 '''
-help = Telegraph(access_token=telegraph_token).create_page(
-        title='Helios Mirrorbot Help',
-        author_name='Helios Mirrorbot',
-        author_url='https://github.com/arshsisodiya/helios-mirror-public',
-        html_content=help_string_telegraph,
+help = telegraph.create_page(
+        title='Helios Mirror Help',
+        content=help_string_telegraph,
     )["path"]
 
 help_string = f'''
