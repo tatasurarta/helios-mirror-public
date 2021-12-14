@@ -1,5 +1,5 @@
 This is a Telegram Bot written in Python for mirroring files on the Internet to your Google Drive or Telegram. Based on [python-aria-mirror-bot](https://github.com/lzzy12/python-aria-mirror-bot)
-##Fork of Anasty's Repo previously know as Slam Mirror Repo
+### Fork of Anasty's Repo previously know as Slam Mirror Repo
 
 # Features:
 <details>
@@ -66,7 +66,7 @@ uptobox.com (Uptobox account must be premium), solidfiles.com
 </details>
 
 # How to deploy?
-##Simplest and easiest way
+## Simplest and easiest way
 ```
 - Fork this repo
 - Download the sample_config.env file
@@ -83,7 +83,7 @@ uptobox.com (Uptobox account must be premium), solidfiles.com
 - After that go to Action tab on your forked repo and run action"
 - Your bot will be deployed, you can check logs of actions and heroku in case if you face any issue.
 ```
-##More ways to Deploy
+## More ways to Deploy
 <details>
     <summary> Click Here For More Details </summary>
 
@@ -154,27 +154,33 @@ Fill up rest of the fields. Meaning of each field is discussed below:
 - `DOWNLOAD_DIR`: The path to the local folder where the downloads should be downloaded to
 - `DOWNLOAD_STATUS_UPDATE_INTERVAL`: A short interval of time in seconds after which the Mirror progress/status message is updated. (I recommend to keep it to `7` seconds at least)  
 - `AUTO_DELETE_MESSAGE_DURATION`: Interval of time (in seconds), after which the bot deletes it's message (and command message) which is expected to be viewed instantly. (**NOTE**: Set to `-1` to never automatically delete messages)
-- `BASE_URL_OF_BOT`: (Required for Heroku to avoid sleep/idling) Valid BASE URL of app where the bot is deployed. Format of URL should be `http://myip` (where `myip` is the IP/Domain of your bot) or if you have chosen other port than `80` then fill in this format `http://myip:port`, for Heroku fill `https://yourappname.herokuapp.com` (**NOTE**: Do not put slash at the end), still got idling? You can use http://cron-job.org to ping your Heroku app.
+-`BASE_URL_OF_BOT`: (Required for Heroku to avoid sleep/idling) Valid BASE URL of app where the bot is deployed. Format of URL should be `http://myip` (where `myip` is the IP/Domain of your bot) or if you have chosen other port than `80` then fill in this format `http://myip:port`, for Heroku fill `https://yourappname.herokuapp.com` (**NOTE**: Do not put slash at the end), still got idling? You can use http://cron-job.org to ping your Heroku app.
+
 ### Optional Field
 - `ACCOUNTS_ZIP_URL`: Only if you want to load your Service Account externally from an Index Link. Archive the accounts folder to a zip file. Fill this with the direct link of that file.
 - `TOKEN_PICKLE_URL`: Only if you want to load your **token.pickle** externally from an Index Link. Fill this with the direct link of that file.
+- `INDEX_URL`: Refer to https://gitlab.com/ParveenBhadooOfficial/Google-Drive-Index The URL should not have any trailing '/'
+- `DATABASE_URL`: Your Database URL. See [Generate Database](https://github.com/arshsisodiya/helios-mirror-public#generate-database) to generate database (**NOTE**: If you use database you can save your Sudo ID permanently using `/addsudo` command).
+- `AUTHORIZED_CHATS`: Fill user_id and chat_id (not username) of groups/users you want to authorize. Separate them with space, Examples: `-0123456789 -1122334455 6915401739`.
+- `AUTHOR_NAME`: Telegraph Author Name, Default is "Helios Mirror Bot"
+- `AUTHOR_URL`: Telegraph Author URL, Default is "https://t.me/heliosmirror"
+- `TITLE_NAME`: Telegraph Title Name, Default is "Helios Mirror Search"
+- `GD_INFO`: Google Drive File Discription, Default is "Uploaded by Helios Mirror Bot"
+- `HEROKU_APP_NAME`: Your Heroku App name
+- `HEROKU_API_KEY`: Heroku API Key
+- `LOGS_CHATS`: Fill chat_id of channel/group where you want to store logs. Separate them with space, Examples: `-0123456789 -1122334455 6915401739`
+<br> ```Note:Add the mirror bot in Log Channel/Group as Admin ```
+
 - `MULTI_SEARCH_URL`: run driveid.py [here](https://github.com/arshsisodiya/helios-mirror-private/blob/helios-mirror/driveid.py). Upload **drive_folder** file [here](https://gist.github.com/). Open the raw file of that gist, it's URL will be your required variable.
-- `YT_COOKIES_URL`: Youtube authentication cookies. Check setup [Here](https://github.com/ytdl-org/youtube-dl#how-do-i-pass-cookies-to-youtube-dl). Use gist raw link and remove commit id from the link, so you can edit it from gists only.
-- `NETRC_URL`: Use this incase you want to deploy heroku branch from without filling `UPSTREAM_REPO` variable, since after restart this file will cloned from github as empty file. Use gist raw link and remove commit id from the link, so you can edit it from gists only.
 **Note remove commit id from the link**
 
 **Example:** <br> <br>
 `Before: https://gist.githubusercontent.com/arshsisodiya/8cce4a4b4e7f4ea47e948b2d058e52ac/raw/19ba5ab5eb43016422193319f28bc3c7dfb60f25/gist.txt` <br> <br>
 `After:  https://gist.githubusercontent.com/arshsisodiya/8cce4a4b4e7f4ea47e948b2d058e52ac/raw/gist.txt`
 
-- `DATABASE_URL`: Your Database URL. See [Generate Database](https://github.com/anasty17/mirror-leech-telegram-bot/tree/master#generate-database) to generate database (**NOTE**: If you use database you can save your Sudo ID permanently using `/addsudo` command).
-- `AUTHORIZED_CHATS`: Fill user_id and chat_id (not username) of groups/users you want to authorize. Separate them with space, Examples: `-0123456789 -1122334455 6915401739`.
 - `SUDO_USERS`: Fill user_id (not username) of users whom you want to give sudo permission. Separate them with space, Examples: `0123456789 1122334455 6915401739` (**NOTE**: If you want to save Sudo ID permanently without database, you must fill your Sudo Id here).
-- `LOGS_CHATS`: Fill chat_id of channel/group where you want to store logs. Separate them with space, Examples: `-0123456789 -1122334455 6915401739`
-<br> ```Note:Add the mirror bot in Log Channel/Group as Admin ```
 - `IS_TEAM_DRIVE`: Set to `True` if `GDRIVE_FOLDER_ID` is from a Team Drive else `False` or Leave it empty. `Bool`
-- `USE_SERVICE_ACCOUNTS`: (Leave empty if unsure) Whether to use Service Accounts or not. For this to work see [Using Service Accounts](https://github.com/anasty17/mirror-leech-telegram-bot#generate-service-accounts-what-is-service-account) section below.
-- `INDEX_URL`: Refer to https://gitlab.com/ParveenBhadooOfficial/Google-Drive-Index The URL should not have any trailing '/'
+- `USE_SERVICE_ACCOUNTS`: (Leave empty if unsure) Whether to use Service Accounts or not. For this to work see [Using Service Accounts](https://github.com/arshsisodiya/helios-mirror-public#generate-service-accounts-what-is-service-account) section below.
 - `MEGA_API_KEY`: Mega.nz API key to mirror mega.nz links. Get it from [Mega SDK Page](https://mega.nz/sdk)
 - `MEGA_EMAIL_ID`: Your E-Mail ID used to sign up on mega.nz for using premium account (Leave though)
 - `MEGA_PASSWORD`: Your Password for your mega.nz account
@@ -196,19 +202,17 @@ Fill up rest of the fields. Meaning of each field is discussed below:
 - `AS_DOCUMENT`: Default Telegram file type upload. Empty or `False` means as media. `Bool`
 - `EQUAL_SPLITS`: Split files larger than **TG_SPLIT_SIZE** into equal parts size. `Bool`
 - `CUSTOM_FILENAME`: Add custom word to leeched file name.
-- `PHPSESSID` and `CRYPT`: Cookies for gdtot google drive link generator. Check setup [here](https://github.com/anasty17/mirror-leech-telegram-bot/tree/master#Gdtot Cookies)
-- `AUTHOR_NAME`: Telegraph Author Name, Default is "Helios Mirror Bot"
-- `AUTHOR_URL`: Telegraph Author URL, Default is "https://t.me/heliosmirror"
-- `TITLE_NAME`: Telegraph Title Name, Default is "Helios Mirror Search"
-- `GD_INFO`: Google Drive File Discription, Default is "Uploaded by Helios Mirror Bot"
+- `PHPSESSID` and `CRYPT`: Cookies for gdtot google drive link generator. Check setup [here](https://github.com/arshsisodiya/helios-mirror-public#gdtot-cookies)
 - `SHORTENER_API`: Fill your Shortener API key.
 - `SHORTENER`: Shortener URL.
 Supported URL Shorteners:
 ```
 exe.io, gplinks.in, shrinkme.io, urlshortx.com, shortzon.com, bit.ly,
 shorte.st, linkvertise.com , ouo.io
+- `YT_COOKIES_URL`: Youtube authentication cookies. Check setup [Here](https://github.com/ytdl-org/youtube-dl#how-do-i-pass-cookies-to-youtube-dl). Use gist raw link and remove commit id from the link, so you can edit it from gists only.
+- `NETRC_URL`: Use this incase you want to deploy heroku branch from without filling `UPSTREAM_REPO` variable, since after restart this file will cloned from github as empty file. Use gist raw link and remove commit id from the link, so you can edit it from gists only.
+
 ```
-- `SEARCH_PLUGINS`: List of qBittorrent search plugins (github raw links). I have added some plugins, you can remove/add plugins as you want. Main Source: [qBittorrent Search Plugins (Official/Unofficial)](https://github.com/qbittorrent/search-plugins/wiki/Unofficial-search-plugins) (**NOTE**: Many plugins will leads to slow search process).
 
 ### Add more buttons (Optional Field)
 Three buttons are already added including Drive Link, Index Link, and View Link, you can add extra buttons, if you don't know what are the below entries, simply leave them empty.
@@ -251,6 +255,7 @@ log - Get the Bot Log [owner/sudo only]
 shell - Run commands in Shell [owner only]
 restart - Restart the Bot [owner/sudo only]
 stats - Bot Usage Stats
+usage - to show heroku dyno usage [Owner only]
 ping - Ping the Bot
 help - All cmds with description
 ```
@@ -269,7 +274,7 @@ help - All cmds with description
 pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
 python3 generate_drive_token.py
 ```
-##Deploying On VPS
+## Deploying On VPS
 <details>
     <summary><b>Click Here For More Details</b></summary>
 **IMPORTANT NOTE**: You must set `SERVER_PORT` variable to `80` or any other port you want to use.
@@ -290,7 +295,7 @@ sudo docker run -p 80:80 mirror-bot
 
 ### Using Docker-compose, you can edit and build your image in seconds:
 
-**NOTE**: If you want to use port other than 80, change it in [docker-compose.yml](https://github.com/anasty17/mirror-leech-telegram-bot/blob/master/docker-compose.yml)
+**NOTE**: If you want to use port other than 80, change it in [docker-compose.yml](https://github.com/arshsisodiya/helios-mirror-public/blob/master/docker-compose.yml)
 
 ```
 sudo apt install docker-compose
