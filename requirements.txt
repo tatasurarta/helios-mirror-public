@@ -11,6 +11,7 @@ google-auth-httplib2
 google-auth-oauthlib
 gunicorn
 js2py
+heroku3
 lk21
 lxml
 pillow
