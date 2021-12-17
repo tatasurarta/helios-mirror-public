@@ -161,8 +161,6 @@ help_string_telegraph = f'''<br>
 <b>/{BotCommands.UsageCommand}</b>: Show Heroku Dyno Usage (Only Owner)
 <br><br>
 <b>/{BotCommands.ShellCommand}</b>: Run commands in Shell (Only Owner)
-<br><br>
-<b>/{BotCommands.ExecHelpCommand}</b>: Get help for Executor module (Only Owner)
 '''
 help = telegraph.create_page(
         title='Helios Mirror Help',
