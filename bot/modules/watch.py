@@ -48,8 +48,8 @@ def _watch(bot, update, isZip=False, isLeech=False, pswd=None):
         link = reply_to.text.strip()
 
     if not is_url(link):
-        help_msg = "<b>Send link along with command line:</b>"
-        help_msg += "\n<b>or Reply to link:</b>"
+        help_msg = "Send link along with command line"
+        help_msg += "\nor Reply to link"
         return sendMessage(help_msg, bot, update)
 
     listener = MirrorListener(bot, update, isZip, isLeech=isLeech, pswd=pswd)
@@ -98,8 +98,7 @@ def _watch(bot, update, isZip=False, isLeech=False, pswd=None):
                 if quality in formats_dict:
                     formats_dict[quality][frmt['tbr']] = size
                 else:
-                    subformat = {}
-                    subformat[frmt['tbr']] = size
+                    subformat = {frmt['tbr']: size}
                     formats_dict[quality] = subformat
 
             for forDict in formats_dict:
@@ -133,16 +132,10 @@ def qual_subbuttons(task_id, qual, msg):
     height = qual_fps_ext[0]
     fps = qual_fps_ext[1]
     ext = qual_fps_ext[2]
-    tbrs = []
-    for tbr in formats_dict[qual]:
-        tbrs.append(tbr)
+    tbrs = [tbr for tbr in formats_dict[qual]]
     tbrs.sort(reverse=True)
     for index, br in enumerate(tbrs):
-        if index == 0:
-            tbr = f">{br}"
-        else:
-            sbr = index - 1
-            tbr = f"<{tbrs[sbr]}"
+        tbr = f">{br}" if index == 0 else f'<{tbrs[index - 1]}'
         if fps != '':
             video_format = f"bv*[height={height}][fps={fps}][ext={ext}][tbr{tbr}]+ba/b"
         else:
@@ -191,25 +184,23 @@ def select_format(update, context):
         return editMessage('Choose Video Quality:', msg, task_info[4])
     elif data[2] == "audio":
         query.answer()
-        if len(data) == 4:
-            playlist = True
-        else:
-            playlist = False
+        playlist = len(data) == 4
         return audio_subbuttons(task_id, msg, playlist)
     elif data[2] != "cancel":
-        query.answer()
-        listener = task_info[0]
-        link = task_info[2]
-        name = task_info[3]
-        qual = data[2]
-        if len(data) == 4:
-            playlist = True
-        else:
-            playlist = False
-        ydl = YoutubeDLHelper(listener)
-        threading.Thread(target=ydl.add_download,args=(link, f'{DOWNLOAD_DIR}{task_id}', name, qual, playlist)).start()
+        _extracted_from_select_format_27(query, task_info, data, task_id)
     del listener_dict[task_id]
     query.message.delete()
+
+# TODO Rename this here and in `select_format`
+def _extracted_from_select_format_27(query, task_info, data, task_id):
+    query.answer()
+    listener = task_info[0]
+    link = task_info[2]
+    name = task_info[3]
+    qual = data[2]
+    playlist = len(data) == 4
+    ydl = YoutubeDLHelper(listener)
+    threading.Thread(target=ydl.add_download,args=(link, f'{DOWNLOAD_DIR}{task_id}', name, qual, playlist)).start()
 
 def watch(update, context):
     _watch(context.bot, update)
