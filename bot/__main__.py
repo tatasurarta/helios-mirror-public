@@ -153,7 +153,9 @@ help_string_telegraph = f'''<br>
 <br><br>
 <b>/{BotCommands.CancelAllCommand}</b>: Cancel all downloading tasks
 <br><br>
-<b>/{BotCommands.ListCommand}</b> [query]: Search in Google Drive(s)
+<b>/{BotCommands.ListCommand}</b> [query]: Search in Google Drive(s) With New and Interactive UI
+<br><br>
+<b>/{BotCommands.SearchCommand}</b> [query]: Search in Google Drive(s) 
 <br><br>
 <b>/{BotCommands.TorrentSearchCommand}</b> [query]: Search for torrents with API
 <br>sites: <code>rarbg, 1337x, yts, etzv, tgx, torlock, piratebay, nyaasi, ettv</code><br><br>

@@ -500,7 +500,21 @@ try:
 except KeyError:
     logging.warning('CHANNEL_USERNAME not provided!')
     CHANNEL_USERNAME = None
+try:
+    RECURSIVE_SEARCH = getConfig("RECURSIVE_SEARCH")
+    if RECURSIVE_SEARCH.lower() == "true":
+        RECURSIVE_SEARCH = True
+    else:
+        RECURSIVE_SEARCH = False
+except KeyError:
+    RECURSIVE_SEARCH = False
 
+if RECURSIVE_SEARCH:
+    if DRIVE_ID:
+        pass
+    else:
+        LOGGER.error("Fill Drive_Folder File For Multi Drive Search!")
+        exit(1)
 try:
     TOKEN_PICKLE_URL = getConfig('TOKEN_PICKLE_URL')
     if len(TOKEN_PICKLE_URL) == 0:
