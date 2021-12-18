@@ -1,39 +1,37 @@
-import requests
-import urllib
-import pathlib
 import os
-import subprocess
-import threading
+import pathlib
 import re
-import time
 import shutil
+import subprocess
+import urllib
 
+import requests
+from telegram import InlineKeyboardMarkup, ParseMode
 from telegram.ext import CommandHandler
-from telegram import InlineKeyboardMarkup
-from requests.exceptions import RequestException
 
-from bot import Interval, INDEX_URL, BUTTON_FOUR_NAME, BUTTON_FOUR_URL, BUTTON_FIVE_NAME, BUTTON_FIVE_URL, \
-                BUTTON_SIX_NAME, BUTTON_SIX_URL, BLOCK_MEGA_FOLDER, BLOCK_MEGA_LINKS, VIEW_LINK, aria2, \
-                dispatcher, DOWNLOAD_DIR, download_dict, download_dict_lock, TG_SPLIT_SIZE, LOGGER, LOGS_CHATS
+from bot import INDEX_URL, BUTTON_FOUR_NAME, BUTTON_FOUR_URL, BUTTON_FIVE_NAME, BUTTON_FIVE_URL, \
+    BUTTON_SIX_NAME, BUTTON_SIX_URL, BLOCK_MEGA_FOLDER, BLOCK_MEGA_LINKS, VIEW_LINK, aria2, QB_SEED, \
+    dispatcher, DOWNLOAD_DIR, download_dict, download_dict_lock, TG_SPLIT_SIZE, LOGS_CHATS
 from bot.helper.ext_utils import fs_utils, bot_utils
-from bot.helper.ext_utils.shortenurl import short_url
 from bot.helper.ext_utils.exceptions import DirectDownloadLinkException, NotSupportedExtractionArchive
+from bot.helper.ext_utils.shortenurl import short_url
 from bot.helper.mirror_utils.download_utils.aria2_download import AriaDownloadHelper
+from bot.helper.mirror_utils.download_utils.direct_link_generator import direct_link_generator
+from bot.helper.mirror_utils.download_utils.gd_downloader import GdDownloadHelper
 from bot.helper.mirror_utils.download_utils.mega_downloader import MegaDownloadHelper
 from bot.helper.mirror_utils.download_utils.qbit_downloader import QbitTorrent
-from bot.helper.mirror_utils.download_utils.direct_link_generator import direct_link_generator
 from bot.helper.mirror_utils.download_utils.telegram_downloader import TelegramDownloadHelper
 from bot.helper.mirror_utils.status_utils import listeners
 from bot.helper.mirror_utils.status_utils.extract_status import ExtractStatus
-from bot.helper.mirror_utils.status_utils.zip_status import ZipStatus
 from bot.helper.mirror_utils.status_utils.split_status import SplitStatus
-from bot.helper.mirror_utils.status_utils.upload_status import UploadStatus
 from bot.helper.mirror_utils.status_utils.tg_upload_status import TgUploadStatus
+from bot.helper.mirror_utils.status_utils.upload_status import UploadStatus
+from bot.helper.mirror_utils.status_utils.zip_status import ZipStatus
 from bot.helper.mirror_utils.upload_utils import gdriveTools, pyrogramEngine
+from bot.helper.telegram_helper import button_build
 from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.filters import CustomFilters
-from bot.helper.telegram_helper.message_utils import sendMessage, sendMarkup, delete_all_messages, update_all_messages, sendStatusMessage
-from bot.helper.telegram_helper import button_build
+from bot.helper.telegram_helper.message_utils import *
 
 ariaDlManager = AriaDownloadHelper()
 ariaDlManager.start_listener()
@@ -231,7 +229,7 @@ class MirrorListener(listeners.MirrorListeners):
                 sendMessage(msg, self.bot, self.update)
             else:
                 chat_id = str(self.message.chat.id)[4:]
-                msg += f'\n<b>cc: </b>{uname}\n\n'
+                msg += f'\n<b>Leeched By: </b>{uname}\n\n'
                 fmsg = ''
                 for index, item in enumerate(list(files), start=1):
                     msg_id = files[item]
@@ -244,14 +242,14 @@ class MirrorListener(listeners.MirrorListeners):
                 if fmsg != '':
                     time.sleep(1.5)
                     sendMessage(msg + fmsg, self.bot, self.update)
+            if not self.isQbit or not QB_SEED:
                 with download_dict_lock:
-                    count = self._extracted_from_onUploadComplete_30()
+                    count = self._extracted_from_onUploadComplete_33()
                 if count == 0:
                     self.clean()
                 else:
                     update_all_messages()
-                return
-
+            return
         with download_dict_lock:
             msg = f'<b>Name: </b><code>{download_dict[self.uid].name()}</code>\n\n<b>Size: </b>{size}'
             msg += f'\n\n<b>Type: </b>{typ}'
@@ -287,7 +285,7 @@ class MirrorListener(listeners.MirrorListeners):
             else:
                 uname = f'<a href="tg://user?id={self.message.from_user.id}">{self.message.from_user.first_name}</a>'
             if uname is not None:
-                msg += f'\n\n<b>cc: </b>{uname}'
+                msg += f'\n\n<b>Uploaded By: </b>{uname}'
                 if LOGS_CHATS:
                     try:
                         for i in LOGS_CHATS:
@@ -299,12 +297,24 @@ class MirrorListener(listeners.MirrorListeners):
                                             parse_mode=ParseMode.HTML)
                     except Exception as e:
                         LOGGER.warning(e)
+
+        sendMarkup(msg, self.bot, self.update, InlineKeyboardMarkup(buttons.build_menu(2)))
+        if self.isQbit and QB_SEED:
+            return
+        with download_dict_lock:
+            count = self._extracted_from_onUploadComplete_33()
+        if count == 0:
+            self.clean()
+        else:
+            update_all_messages()
+
+    # TODO Rename this here and in `onUploadComplete`
+    def _extracted_from_onUploadComplete_33(self):
         try:
             fs_utils.clean_download(download_dict[self.uid].path())
         except FileNotFoundError:
             pass
         del download_dict[self.uid]
-        sendMarkup(msg, self.bot, self.update, InlineKeyboardMarkup(buttons.build_menu(2)))
         return len(download_dict)
 
     def onUploadError(self, error):
@@ -398,7 +408,9 @@ def _mirror(bot, update, isZip=False, extract=False, isQbit=False, isLeech=False
     gdtot_link = bot_utils.is_gdtot_link(link)
 
     if not bot_utils.is_url(link) and not bot_utils.is_magnet(link) and not os.path.exists(link):
-        return _extracted_from__mirror_71(bot, update)
+        help_msg = "<b>Send link along with command line:</b>"
+        help_msg += "\n<b>or replyto link or file:</b>"
+        return sendMessage(help_msg, bot, update)
     elif not bot_utils.is_mega_link(link) and not isQbit and not bot_utils.is_magnet(link) \
          and not os.path.exists(link) and not bot_utils.is_gdrive_link(link):
         try:
@@ -450,13 +462,6 @@ def _mirror(bot, update, isZip=False, extract=False, isQbit=False, isLeech=False
         ariaDlManager.add_download(link, f'{DOWNLOAD_DIR}{listener.uid}/', listener, name)
         sendStatusMessage(update, bot)
 
-# TODO Rename this here and in `_mirror`
-def _extracted_from__mirror_71(bot, update):
-    help_msg = "<b>Send link or torrent along with command line or reply to link or file </b>"
-    help_msg += "\n\n<b>for password protected index link authorization:</b>"
-    help_msg += "\n<code>/command</code> {link} \nusername\npassword"
-    return sendMessage(help_msg, bot, update)
-
 
 def mirror(update, context):
     _mirror(context.bot, update)
@@ -506,18 +511,19 @@ qb_unzip_mirror_handler = CommandHandler(BotCommands.QbUnzipMirrorCommand, qb_un
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
 qb_zip_mirror_handler = CommandHandler(BotCommands.QbZipMirrorCommand, qb_zip_mirror,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
+
 leech_handler = CommandHandler(BotCommands.LeechCommand, leech,
-                                filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
+                                filters=CustomFilters.owner_filter | CustomFilters.authorized_user, run_async=True)
 unzip_leech_handler = CommandHandler(BotCommands.UnzipLeechCommand, unzip_leech,
-                                filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
+                                filters=CustomFilters.owner_filter | CustomFilters.authorized_user, run_async=True)
 zip_leech_handler = CommandHandler(BotCommands.ZipLeechCommand, zip_leech,
-                                filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
+                                filters=CustomFilters.owner_filter | CustomFilters.authorized_user, run_async=True)
 qb_leech_handler = CommandHandler(BotCommands.QbLeechCommand, qb_leech,
-                                filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
+                                filters=CustomFilters.owner_filter | CustomFilters.authorized_user, run_async=True)
 qb_unzip_leech_handler = CommandHandler(BotCommands.QbUnzipLeechCommand, qb_unzip_leech,
-                                filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
+                                filters=CustomFilters.owner_filter | CustomFilters.authorized_user, run_async=True)
 qb_zip_leech_handler = CommandHandler(BotCommands.QbZipLeechCommand, qb_zip_leech,
-                                filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
+                                filters=CustomFilters.owner_filter | CustomFilters.authorized_user, run_async=True)
 
 dispatcher.add_handler(mirror_handler)
 dispatcher.add_handler(unzip_mirror_handler)
