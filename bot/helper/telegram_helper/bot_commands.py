@@ -39,7 +39,6 @@ class _BotCommands:
         self.QbZipMirrorCommand = getCommand('QBZIP_COMMAND', 'qbzipmirror')
         self.DeleteCommand = getCommand('DEL_COMMAND', 'del')
         self.ShellCommand = getCommand('SHELL_COMMAND', 'shell')
-        self.ExecHelpCommand = getCommand('EXEHELP_COMMAND', 'exechelp')
         self.LeechSetCommand = getCommand('LEECHSET_COMMAND', 'leechset')
         self.SetThumbCommand = getCommand('SETTHUMB_COMMAND', 'setthumb')
         self.LeechCommand = getCommand('LEECH_COMMAND', 'leech')
