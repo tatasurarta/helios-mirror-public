@@ -492,7 +492,15 @@ try:
 except KeyError:
     logging.warning('LOG_CHANNEL not provided!')
     LOG_CHANNEL = None
-    
+
+try:
+    CHANNEL_USERNAME = getConfig('CHANNEL_USERNAME')
+    if len(CHANNEL_USERNAME) == 0:
+        raise KeyError
+except KeyError:
+    logging.warning('CHANNEL_USERNAME not provided!')
+    CHANNEL_USERNAME = None
+
 try:
     TOKEN_PICKLE_URL = getConfig('TOKEN_PICKLE_URL')
     if len(TOKEN_PICKLE_URL) == 0:
