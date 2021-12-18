@@ -5,27 +5,13 @@ This is a Telegram Bot written in Python for mirroring files on the Internet to 
 <details>
     <summary><b>Click Here For More Details</b></summary>
 ## By me
-- qBittorrent
-- Select files from Torrent before downloading using qbittorrent
-- Leech (splitting, thumbnail for each user, setting as document or as media for each user)
-- Size limiting for Torrent/Direct, Zip/Unzip, Mega and Clone
-- Stop duplicates for all tasks except yt-dlp tasks
-- Zip/Unzip G-Drive links
-- Counting files/folders from Google Drive link
-- View Link button, extra button to open file index link in broswer instead of direct download
-- Status Pages for unlimited tasks
-- Clone status
-- Search in multiple Drive folder/TeamDrive
-- Recursive Search (only with `root` or TeamDrive ID, folder ids will be skipped)
-- Multi-Search by token.pickle if exists 
-- Extract rar, zip and 7z splits with or without password
-- Zip file/folder with or without password
-- Use Toke.pickle if file not found with Service Account
-- Random Service Account at startup
-- Mirror/Leech by reply (soon will add for watch and clone)
-- Search for torrents with variable plugins using qBittorrent search engine
-- Many bugs has been fixed
-- Force Subscribe bot
+- Defining Commands in config.env
+- Defining Telegraph Ui elements in config.env
+- Log Chat support for mirror
+- Leech log for leech
+- Force subscriber module
+- Heroku Dyno Usage module
+
 
 ## From official and Other Repositories
 - Mirror direct download links, Torrent, and Telegram files to Google Drive
@@ -46,6 +32,26 @@ This is a Telegram Bot written in Python for mirroring files on the Internet to 
 - Custom Filename* (Only for direct links, Telegram files and yt-dlp. Not for Mega links, Gdrive links or Torrents)
 - Extract or Compress password protected files.
 - Extract these filetypes and uploads to Google Drive
+- qBittorrent
+- Select files from Torrent before downloading using qbittorrent
+- Leech (splitting, thumbnail for each user, setting as document or as media for each user)
+- Size limiting for Torrent/Direct, Zip/Unzip, Mega and Clone
+- Stop duplicates for all tasks except yt-dlp tasks
+- Zip/Unzip G-Drive links
+- Counting files/folders from Google Drive link
+- View Link button, extra button to open file index link in broswer instead of direct download
+- Status Pages for unlimited tasks
+- Clone status
+- Search in multiple Drive folder/TeamDrive
+- Recursive Search (only with `root` or TeamDrive ID, folder ids will be skipped)
+- Multi-Search by token.pickle if exists 
+- Extract rar, zip and 7z splits with or without password
+- Zip file/folder with or without password
+- Use Toke.pickle if file not found with Service Account
+- Random Service Account at startup
+- Mirror/Leech by reply (soon will add for watch and clone)
+- Search for torrents with variable plugins using qBittorrent search engine
+- Many bugs has been fixed
 ```
 ZIP, RAR, TAR, 7z, ISO, WIM, CAB, GZIP, BZIP2, 
 APM, ARJ, CHM, CPIO, CramFS, DEB, DMG, FAT, 
@@ -169,8 +175,11 @@ Fill up rest of the fields. Meaning of each field is discussed below:
 - `HEROKU_APP_NAME`: Your Heroku App name
 - `HEROKU_API_KEY`: Heroku API Key
 - `LOGS_CHATS`: Fill chat_id of channel/group where you want to store logs. Separate them with space, Examples: `-0123456789 -1122334455 6915401739`
-<br> ```Note:Add the mirror bot in Log Channel/Group as Admin ```
-
+- `LOG_CHANNEL`: File the chat_id of channel were you want leech dump, its int type so put channel which starts with -100xx without ""
+- <br> ```Note:Add the mirror bot in Log Channel/Group as Admin ```
+- `CHANNEL_USERNAME`: Channel Username for Force Subscribe bot, it's disabled by default so if you want to use it you have to 
+```python3 -m bot & python3 fsub.py in start.sh```
+- 
 - `MULTI_SEARCH_URL`: run driveid.py [here](https://github.com/arshsisodiya/helios-mirror-private/blob/helios-mirror/driveid.py). Upload **drive_folder** file [here](https://gist.github.com/). Open the raw file of that gist, it's URL will be your required variable.
 **Note remove commit id from the link**
 
@@ -246,8 +255,9 @@ leechzipwatch - Leech playlist link and upload as .zip
 leechset - Leech settings
 setthumb - Set Thumbnail
 status - Get Mirror Status message
-list - [query] Search files in Drive
-search - [query] Search for torrents with installed qbittorrent search plugins
+list - [query] Search files in Drive using new and interactive ui
+search - [query] Search files in Drive using new and interactive ui
+ts - [query] Search for torrents with installed qbittorrent search plugins
 cancel - Cancel a task
 cancelall - Cancel all tasks
 del - [drive_url] Delete file from Drive
