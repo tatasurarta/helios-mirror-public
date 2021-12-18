@@ -176,7 +176,7 @@ def getResult(search_results, key, message, tool):
 
     editMessage(f"<b>Creating</b> {len(telegraph_content)} <b>Telegraph pages.</b>", message)
     path = [telegraph.create_page(
-                title='Mirror-leech-bot Torrent Search',
+                title='Helios-Mirror Torrent Search',
                 content=content
             )["path"] for content in telegraph_content]
     time.sleep(0.5)
