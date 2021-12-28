@@ -1,7 +1,6 @@
 This is a Telegram Bot written in Python for mirroring files on the Internet to your Google Drive or Telegram. Based on [python-aria-mirror-bot](https://github.com/lzzy12/python-aria-mirror-bot)
 ### Fork of Anasty's Repo previously know as Slam Mirror Repo
 
-## Deprecated - Not in Active Maintenance
 # Features:
 <details>
     <summary><b>Click Here For More Details</b></summary>
@@ -123,8 +122,7 @@ Fill up rest of the fields. Meaning of each field is discussed below:
 - `HEROKU_APP_NAME`: Your Heroku App name
 - `HEROKU_API_KEY`: Heroku API Key
 - `LOGS_CHATS`: Fill chat_id of channel/group where you want to store logs. Separate them with space, Examples: `-0123456789 -1122334455 6915401739`
-- `LOG_CHANNEL`: File the chat_id of channel were you want leech dump, its int type so put channel which starts with -100xx without ""
-- <br> ```Note:Add the mirror bot in Log Channel/Group as Admin ```
+- `LOG_CHANNEL`: File the chat_id of channel were you want leech dump, put channel ids which starts with -100xx , you can put multiple channel ids separate them with space <br> ```Note:Add Mirror bot in Log Channel(s)/Group(s) as Admin ```
 - `CHANNEL_USERNAME`: Channel Username for Force Subscribe bot, it's disabled by default so if you want to use it you have to 
 ```python3 -m bot & python3 fsub.py in start.sh```
 - 
