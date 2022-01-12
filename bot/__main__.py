@@ -19,7 +19,7 @@ from .helper.ext_utils.telegraph_helper import telegraph
 from .helper.ext_utils.bot_utils import get_readable_file_size, get_readable_time
 from .helper.telegram_helper.filters import CustomFilters
 from bot.helper.telegram_helper import button_build
-from .modules import authorize, list, cancel_mirror, mirror_status, mirror, clone, watch, search, delete, speedtest, count, leech_settings, usage, ts_search
+from .modules import authorize, list, cancel_mirror, mirror_status, mirror, clone, watch, search, delete, speedtest, count, leech_settings, usage, ts_search, mediainfo
 
 
 def stats(update, context):
@@ -194,6 +194,8 @@ help_string = f'''
 
 /{BotCommands.StatusCommand}: Shows a status of all the downloads
 
+/{BotCommands.MediaInfoCommand}: Dapatkan info terperinci tentang Media Jawab (hanya untuk file telegram)
+
 /{BotCommands.UsageCommand}: Show Heroku Dyno Usage'''
 
 def bot_help(update, context):
@@ -219,6 +221,7 @@ botcmds = [
         (f'{BotCommands.StatusCommand}','Get mirror status message'),
         (f'{BotCommands.StatsCommand}','Bot usage stats'),
         (f'{BotCommands.PingCommand}','Ping the bot'),
+        (f'{BotCommands.MediaInfoCommand}','Dapatkan info detail tentang media yang dibalas'),
         (f'{BotCommands.UsageCommand}', 'Check Heroku Dyno Usage'),
         (f'{BotCommands.HelpCommand}','Get detailed help')
     ]
