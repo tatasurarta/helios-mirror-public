@@ -50,5 +50,6 @@ class _BotCommands:
         self.LeechWatchCommand = getCommand('LEECHWATCH_COMMAND', 'leechwatch')
         self.LeechZipWatchCommand = getCommand('LEECHZIPWATCH_COMMAND', 'leechzipwatch')
         self.TorrentSearchCommand = getCommand('TOR_COMMAND', 'ts')
+        self.MediaInfoCommand = getCommand('MEDIAINFO_COMMAND', 'mediainfo')
         self.UsageCommand = getCommand('USAGE_COMMAND', 'usage')
 BotCommands = _BotCommands()
